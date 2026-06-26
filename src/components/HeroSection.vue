@@ -11,12 +11,12 @@
     <div ref="shape4Ref" class="hero__shape hero__shape--4"></div>
 
     <div class="container hero__content" ref="contentRef">
-      <span class="tag hero__tag" ref="tagRef">Desarrollo web estático</span>
+      <span class="tag hero__tag" ref="tagRef">Desarrollo web empresarial</span>
       <h1 class="hero__title" ref="titleRef">
         Tu negocio merece una web profesional
       </h1>
       <p class="hero__subtitle" ref="subtitleRef">
-        Creamos sitios web estáticos modernos, ultrarrápidos y optimizados para convertir visitantes en clientes. Sin complicaciones, sin backend, sin excusas.
+        Creamos sitios web estáticos modernos, ultrarrápidos y optimizados para convertir visitantes en clientes. Accesibles, sin complicaciones y llamativas.
       </p>
       <div class="hero__actions" ref="actionsRef">
         <router-link to="/contacto" class="btn btn-primary">

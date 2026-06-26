@@ -3,7 +3,7 @@
     <div class="container navbar__inner">
       <router-link to="/" class="navbar__logo">
         <span class="navbar__logo-icon">&lt;/&gt;</span>
-        <span class="navbar__logo-text">Potato<span class="gradient-text">Web</span></span>
+        <span class="navbar__logo-text">Potato<span class="gradient-text">Ship</span></span>
       </router-link>
 
       <nav class="navbar__links" :class="{ 'navbar__links--open': isMenuOpen }">
