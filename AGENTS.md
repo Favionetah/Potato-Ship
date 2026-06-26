@@ -48,6 +48,51 @@ No test, lint, typecheck, or formatter scripts are configured.
 --color-text-muted: #c9ad96 (secondary text)
 ```
 
+## Critical gotchas (learned the hard way)
+
+### 1. Vite base path — must be conditional
+`vite.config.js` uses `base: process.env.CI ? '/Potato-Ship/' : '/'`.  
+- Local dev: `base: '/'` (works at `localhost:5173/`  
+- GitHub Actions: `base: '/Potato-Ship/'` for Pages deploy  
+**Do not hardcode `/Potato-Ship/`** — breaks local dev.
+
+### 2. Router needs `import.meta.env.BASE_URL`
+```js
+history: createWebHistory(import.meta.env.BASE_URL)
+```
+Vite injects `BASE_URL` from `base` config. Required for GitHub Pages subdirectory routing.
+
+### 3. GitHub Pages SPA routing needs `public/404.html`
+GitHub Pages doesn't support SPA history mode. Add `public/404.html` that redirects to `index.html` with hash. See existing file for pattern.
+
+### 4. Bento grid uses wrapper pattern
+Grid items are `.bento-card-wrapper` (not `.bento-card`).  
+- `.bento-card-wrapper` = grid item, flex column container  
+- `.bento-card` = visual card inside wrapper  
+- FLIP animation captures wrapper positions, not card positions  
+- `is-active` class goes on BOTH wrapper (for `grid-column: 1 / -1`) and card (for visual styles)
+
+### 5. Service card `__right` panel needs `max-height: 0`
+In non-active state:
+```css
+.bento-card__right {
+  max-width: 0;
+  max-height: 0;  /* REQUIRED — prevents vertical height variance */
+  overflow: hidden;
+}
+```
+Without `max-height: 0`, cards with more/longer features render taller due to hidden flex children taking vertical space.
+
+### 6. Hover animations: play/reverse pattern
+```js
+onEnter(i) { cardStates[i].tl?.play() }
+onLeave(i) { if (!cardStates[i].pinned) cardStates[i].tl?.reverse() }
+```
+Animations are paused GSAP timelines. Hover plays them; leave reverses (unless pinned by click).
+
+### 7. `grid-auto-rows: minmax(170px, auto)` not fixed
+Cards use `minmax(170px, auto)` so rows fit content. Combined with wrapper pattern and `__right` max-height, all cards stay uniform height (~208px).
+
 ## Custom cursor
 App.vue has a global custom cursor (circle follower). On touch devices `cursor: none` is set on `<html>`. Interactive elements (a, button, .service-card, inputs) enlarge the cursor on hover.
 

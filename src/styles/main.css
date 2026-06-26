@@ -183,6 +183,7 @@ img {
   font-size: 1.125rem;
   color: var(--color-text-muted);
   max-width: 600px;
+  margin: 0 auto;
   font-weight: 400;
 }
 
