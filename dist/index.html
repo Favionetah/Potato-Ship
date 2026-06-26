@@ -5,14 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="PotatoWeb — Creamos sitios web estáticos modernos, rápidos y profesionales para tu negocio.">
     <title>PotatoWeb — Sitios web estáticos profesionales</title>
-    <link rel="icon" type="image/svg+xml" href="/Potato-Ship/favicon.svg">
+    <link rel="icon" type="image/svg+xml" href="/Potato-Ship/dist/favicon.svg">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-    <script type="module" crossorigin src="/Potato-Ship/assets/index-DNa0XUDL.js"></script>
-    <link rel="stylesheet" crossorigin href="/Potato-Ship/assets/index-DhtNdQx4.css">
+    <script>
+      if (location.hostname.includes('github.io') && !location.pathname.startsWith('/Potato-Ship/dist/')) {
+        location.href = '/Potato-Ship/dist/index.html' + location.hash;
+      }
+    </script>
+    <script type="module" crossorigin src="/Potato-Ship/dist/assets/index-ednCyZ54.js"></script>
+    <link rel="stylesheet" crossorigin href="/Potato-Ship/dist/assets/index-DhtNdQx4.css">
   </head>
   <body>
     <div id="app"></div>
