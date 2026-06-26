@@ -445,7 +445,7 @@ onMounted(() => {
 }
 
 .bento-card__click-hint {
-  font-size: 0.6875rem;
+  font-size: 0.75rem;
   color: var(--color-primary);
   opacity: 0;
   transition: opacity 0.3s ease;
@@ -633,7 +633,7 @@ onMounted(() => {
 /* === Catálogo: product shelf === */
 .anim-shelf-item {
   position: absolute;
-  background: rgba(78, 111, 130, 0.06);
+  background: rgba(78, 111, 130, 0.5);
   border: 1px solid rgba(78, 111, 130, 0.1);
 }
 .anim-shelf-item:nth-child(1) { top: 10%; left: 8%; width: 26%; height: 35%; }
@@ -650,7 +650,7 @@ onMounted(() => {
   left: 15%;
   right: 15%;
   bottom: 12%;
-  border: 1px solid rgba(255, 3, 2, 0.08);
+  border: 1px solid rgba(255, 3, 2, 0.25);
   background: rgba(255, 3, 2, 0.02);
   transform-origin: top center;
   opacity: 0;
@@ -660,8 +660,8 @@ onMounted(() => {
   left: 12%;
   right: 12%;
   height: 2px;
-  background: rgba(255, 3, 2, 0.12);
-  border-radius: 1px;
+  background: rgba(255, 3, 2, 0.6);
+  border-radius: 2px;
   transform-origin: left center;
   opacity: 0;
 }
@@ -675,8 +675,8 @@ onMounted(() => {
   position: absolute;
   width: 38%;
   height: 38%;
-  border: 1px solid rgba(250, 219, 190, 0.1);
-  background: rgba(250, 219, 190, 0.03);
+  border: 1px solid rgba(250, 219, 190, 0.3);
+  background: rgba(250, 219, 190, 0.1);
   transform-origin: left center;
   opacity: 0;
 }
@@ -688,14 +688,14 @@ onMounted(() => {
 /* === Informativa: shape morph === */
 .anim-morph {
   position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 50px;
-  height: 50px;
+  top: 40%;
+  left: 47%;
+  width: 70px;
+  height: 70px;
   margin-left: -25px;
   margin-top: -25px;
-  background: rgba(78, 111, 130, 0.08);
-  border: 1px solid rgba(78, 111, 130, 0.12);
+  background: rgba(78, 111, 130, 0.5);
+  border: 1px solid rgba(78, 111, 130, 1);
   border-radius: 50%;
   opacity: 0;
 }

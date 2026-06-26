@@ -205,13 +205,14 @@ export function useGsap() {
       }
       case 'informativa': {
         const shape = container.querySelector('.anim-morph')
-        gsap.set(shape, { borderRadius: '50%', scale: 0.7, opacity: 0.3 })
-        tl.to(shape, { scale: 1, opacity: 0.5, duration: 0.3, ease: 'back.out(1.7)' })
-        tl.to(shape, { borderRadius: '4px', duration: 0.35, ease: 'power2.inOut' })
+        gsap.set(shape, { borderRadius: '50%', scale: 0.7, opacity: 0, clipPath: 'polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)' })
+        tl.to(shape, { scale: 1, opacity: 0.5, duration: 0.5, ease: 'back.out(1.7)' })
+        tl.to(shape, { borderRadius: '4px', duration: 0.35, ease: 'back.out(1.7)' })
         tl.to(shape, {
           borderRadius: '0%',
-          clipPath: 'polygon(50% 8%, 0% 100%, 100% 100%)',
-          duration: 0.3, ease: 'power2.inOut'
+          clipPath: 'polygon(50% 8%, 50% 8%, 100% 100%, 0% 100%)',
+          duration: 0.5,
+          ease: 'power2.inOut'
         })
         break
       }
