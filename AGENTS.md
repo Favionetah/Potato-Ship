@@ -2,7 +2,7 @@
 
 ## Stack
 - Vue 3 + Composition API + Vite
-- Vue Router 4 with `createWebHistory` (all routes lazy-loaded)
+- Vue Router 4 with `createWebHashHistory` (all routes lazy-loaded)
 - CSS vanilla (variables in `src/styles/main.css`)
 - GSAP + ScrollTrigger loaded via CDN in `index.html` (not npm)
 
@@ -50,29 +50,44 @@ No test, lint, typecheck, or formatter scripts are configured.
 
 ## Critical gotchas (learned the hard way)
 
-### 1. Vite base path — must be conditional
-`vite.config.js` uses `base: process.env.CI ? '/Potato-Ship/' : '/'`.  
-- Local dev: `base: '/'` (works at `localhost:5173/`  
-- GitHub Actions: `base: '/Potato-Ship/'` for Pages deploy  
-**Do not hardcode `/Potato-Ship/`** — breaks local dev.
+### 1. Vite base path — includes `/dist/` for GitHub Pages
+`vite.config.js` uses `base: process.env.GITHUB_ACTIONS ? '/Potato-Ship/dist/' : '/'`.  
+- Local dev: `base: '/'` (works at `localhost:5173/`)
+- GitHub Actions: `base: '/Potato-Ship/dist/'` (assets at `/Potato-Ship/dist/assets/...`)
+**Do not hardcode** — breaks local dev.
 
-### 2. Router needs `import.meta.env.BASE_URL`
+### 2. Router uses `createWebHashHistory` (no BASE_URL needed)
 ```js
-history: createWebHistory(import.meta.env.BASE_URL)
+history: createWebHashHistory()
 ```
-Vite injects `BASE_URL` from `base` config. Required for GitHub Pages subdirectory routing.
+Hash routing avoids all SPA routing issues with GitHub Pages. URL format: `/#/servicios`.  
+No `import.meta.env.BASE_URL` needed — hash handles routing independent of base path.
 
-### 3. GitHub Pages SPA routing needs `public/404.html`
-GitHub Pages doesn't support SPA history mode. Add `public/404.html` that redirects to `index.html` with hash. See existing file for pattern.
+### 3. Conditional redirect in root `index.html`
+GitHub Pages serves from `main` branch root. The root `index.html` is the Vite entry template.
+A script redirects visitors to `dist/index.html` on GitHub Pages only:
+```html
+<script>
+  if (location.hostname.includes('github.io') && !location.pathname.startsWith('/Potato-Ship/dist/')) {
+    location.href = '/Potato-Ship/dist/index.html' + location.hash;
+  }
+</script>
+```
+- **Local dev**: condition false (localhost), normal Vite dev
+- **GitHub Pages**: redirects to `dist/index.html`, app loads with hash routing
+- **Guard**: prevents infinite loop on `dist/index.html` itself
 
-### 4. Bento grid uses wrapper pattern
+### 4. `public/404.html` — simple redirect
+Since hash routing handles SPA, `public/404.html` just redirects to `index.html`.
+
+### 5. Bento grid uses wrapper pattern
 Grid items are `.bento-card-wrapper` (not `.bento-card`).  
 - `.bento-card-wrapper` = grid item, flex column container  
 - `.bento-card` = visual card inside wrapper  
 - FLIP animation captures wrapper positions, not card positions  
 - `is-active` class goes on BOTH wrapper (for `grid-column: 1 / -1`) and card (for visual styles)
 
-### 5. Service card `__right` panel needs `max-height: 0`
+### 6. Service card `__right` panel needs `max-height: 0`
 In non-active state:
 ```css
 .bento-card__right {
@@ -83,14 +98,14 @@ In non-active state:
 ```
 Without `max-height: 0`, cards with more/longer features render taller due to hidden flex children taking vertical space.
 
-### 6. Hover animations: play/reverse pattern
+### 7. Hover animations: play/reverse pattern
 ```js
 onEnter(i) { cardStates[i].tl?.play() }
 onLeave(i) { if (!cardStates[i].pinned) cardStates[i].tl?.reverse() }
 ```
 Animations are paused GSAP timelines. Hover plays them; leave reverses (unless pinned by click).
 
-### 7. `grid-auto-rows: minmax(170px, auto)` not fixed
+### 8. `grid-auto-rows: minmax(170px, auto)` not fixed
 Cards use `minmax(170px, auto)` so rows fit content. Combined with wrapper pattern and `__right` max-height, all cards stay uniform height (~208px).
 
 ## Custom cursor
@@ -100,7 +115,7 @@ App.vue has a global custom cursor (circle follower). On touch devices `cursor: 
 The `tilt3D` helper in `useGsap` listens to mousemove on `.service-card` elements and applies rotateX/rotateY transforms. Cleanup happens automatically in `onBeforeUnmount`.
 
 ## Deployment
-- **GitHub Pages**: CI in `.github/workflows/deploy.yml` — push to `main` auto-deploys
+- **GitHub Pages**: Serves from `main` branch root. Root `index.html` redirects to `dist/index.html` with hash routing. `dist/` is committed to repo.
 - **Vercel**: `vercel.json` provides SPA redirects
 - **Netlify**: needs `public/_redirects` with `/* /index.html 200`
 - **Static site only**: no backend, no database, no API endpoints
