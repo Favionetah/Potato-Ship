@@ -141,5 +141,5 @@ Distribuido bajo licencia MIT. Ver [`LICENSE`](LICENSE) para más información.
 ---
 
 <div align="center">
-  <p>Hecho con ❤️ por <a href="https://github.com/tu-usuario">@tu-usuario</a></p>
+  <p>Hecho con ❤️ por <a href="https://github.com/Favionetah">@Favionetah</a></p>
 </div>
