@@ -5,16 +5,9 @@
       <div class="hero__grid"></div>
     </div>
 
-    <div ref="shape1Ref" class="hero__shape hero__shape--1"></div>
-    <div ref="shape2Ref" class="hero__shape hero__shape--2"></div>
-    <div ref="shape3Ref" class="hero__shape hero__shape--3"></div>
-    <div ref="shape4Ref" class="hero__shape hero__shape--4"></div>
-
     <div class="container hero__content" ref="contentRef">
       <span class="tag hero__tag" ref="tagRef">Desarrollo web empresarial</span>
-      <h1 class="hero__title" ref="titleRef">
-        Tu negocio merece una web profesional
-      </h1>
+      <h1 class="hero__title" ref="titleRef">Tu negocio merece una web profesional</h1>
       <p class="hero__subtitle" ref="subtitleRef">
         Creamos sitios web estáticos modernos, ultrarrápidos y optimizados para convertir visitantes en clientes. Accesibles, sin complicaciones y llamativas.
       </p>
@@ -68,11 +61,6 @@ onMounted(() => {
 
   tl.fromTo('.hero__grid', { opacity: 0 }, { opacity: 1, duration: 1 }, 0)
 
-  tl.fromTo('.hero__shape--1', { opacity: 0, scale: 0 }, { opacity: 0.15, scale: 1, duration: 1.2, ease: 'back.out(1.7)' }, 0.4)
-  tl.fromTo('.hero__shape--2', { opacity: 0, scale: 0 }, { opacity: 0.1, scale: 1, duration: 1.2, ease: 'back.out(1.7)' }, 0.6)
-  tl.fromTo('.hero__shape--3', { opacity: 0, scale: 0 }, { opacity: 0.12, scale: 1, duration: 1.2, ease: 'back.out(1.7)' }, 0.5)
-  tl.fromTo('.hero__shape--4', { opacity: 0, scale: 0 }, { opacity: 0.08, scale: 1, duration: 1.2, ease: 'back.out(1.7)' }, 0.7)
-
   tl.fromTo(tagRef.value, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' }, 1)
 
   const chars = splitTextToSpans(titleRef.value)
@@ -93,10 +81,6 @@ onMounted(() => {
   tl.fromTo(actionsRef.value, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' }, '-=0.2')
   tl.fromTo('.hero__scroll-indicator', { opacity: 0 }, { opacity: 1, duration: 0.5 }, '-=0.1')
 
-  floatingElement('.hero__shape--1', { y: -25, x: 15, rotation: 8, duration: 4, delay: 0 })
-  floatingElement('.hero__shape--2', { y: 20, x: -10, rotation: -5, duration: 5, delay: 0.5 })
-  floatingElement('.hero__shape--3', { y: -15, x: 20, rotation: 10, duration: 3.5, delay: 1 })
-  floatingElement('.hero__shape--4', { y: 30, x: -15, rotation: -8, duration: 4.5, delay: 0.3 })
 
   ScrollTrigger.create({
     trigger: heroRef.value,
@@ -155,8 +139,8 @@ onMounted(() => {
   position: absolute;
   inset: 0;
   background-image:
-    linear-gradient(rgba(78, 111, 130, 0.06) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(78, 111, 130, 0.06) 1px, transparent 1px);
+    linear-gradient(rgba(78, 111, 130, 0.2) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(78, 111, 130, 0.2) 1px, transparent 1px);
   background-size: 64px 64px;
 }
 
@@ -166,42 +150,6 @@ onMounted(() => {
   pointer-events: none;
 }
 
-.hero__shape--1 {
-  top: 15%;
-  left: 8%;
-  width: 60px;
-  height: 60px;
-  border: 1px solid rgba(255, 3, 2, 0.2);
-  transform: rotate(45deg);
-}
-
-.hero__shape--2 {
-  top: 25%;
-  right: 12%;
-  width: 40px;
-  height: 40px;
-  border: 1px solid rgba(250, 219, 190, 0.15);
-  border-radius: 50%;
-}
-
-.hero__shape--3 {
-  bottom: 30%;
-  left: 15%;
-  width: 30px;
-  height: 30px;
-  border: 1px solid rgba(78, 111, 130, 0.25);
-  transform: rotate(30deg);
-  clip-path: polygon(50% 0%, 100% 100%, 0% 100%);
-}
-
-.hero__shape--4 {
-  bottom: 20%;
-  right: 20%;
-  width: 50px;
-  height: 50px;
-  border: 1px solid rgba(255, 3, 2, 0.12);
-  border-radius: 50%;
-}
 
 .hero__content {
   position: relative;
@@ -242,7 +190,7 @@ onMounted(() => {
 
 .hero__scroll-indicator {
   position: absolute;
-  bottom: 2rem;
+  bottom: 3rem;
   left: 50%;
   transform: translateX(-50%);
   z-index: 2;
@@ -250,8 +198,8 @@ onMounted(() => {
 
 .hero__scroll-indicator span {
   display: block;
-  width: 1px;
-  height: 40px;
+  width: 2px;
+  height: 50px;
   background: linear-gradient(to bottom, var(--color-text-dim), transparent);
   animation: scrollPulse 2s ease-in-out infinite;
 }

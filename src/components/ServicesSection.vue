@@ -39,7 +39,7 @@
                 </template>
                 <template v-else-if="s.id === 'landing'">
                   <div class="anim-funnel"></div>
-                  <div v-for="n in 5" :key="n" class="anim-lead-dot" :style="{ '--i': n - 1 }"></div>
+                  <div v-for="n in 6" :key="n" class="anim-lead-dot" :style="{ '--i': n - 1 }"></div>
                   <div v-for="n in 3" :key="'c'+n" class="anim-check" :style="{ '--i': n - 1 }">
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
                   </div>
@@ -586,8 +586,8 @@ onMounted(() => {
 .anim-building {
   position: absolute;
   bottom: 8%;
-  background: rgba(255, 3, 2, 0.06);
-  border: 1px solid rgba(255, 3, 2, 0.08);
+  background: rgba(255, 3, 2, 0.1);
+  border: 1px solid rgba(255, 3, 2, 0.25);
   transform-origin: bottom center;
   opacity: 0;
 }
@@ -601,39 +601,34 @@ onMounted(() => {
 /* === Landing: conversion funnel === */
 .anim-funnel {
   position: absolute;
-  top: 15%;
+  top: 35%;
   left: 50%;
   width: 0;
   height: 0;
   margin-left: -30px;
   border-left: 30px solid transparent;
   border-right: 30px solid transparent;
-  border-top: 50px solid rgba(255, 3, 2, 0.08);
+  border-top: 50px solid rgba(255, 3, 2, 0.3);
   transform-origin: top center;
   opacity: 0;
 }
 .anim-lead-dot {
   position: absolute;
-  width: 6px;
-  height: 6px;
+  width: 10px;
+  height: 10px;
   border-radius: 50%;
   background: rgba(250, 219, 190, 0.5);
-  top: 10%;
+  top: 15%;
 }
-.anim-lead-dot:nth-child(2) { left: 30%; }
-.anim-lead-dot:nth-child(3) { left: 42%; }
-.anim-lead-dot:nth-child(4) { left: 55%; }
-.anim-lead-dot:nth-child(5) { left: 68%; }
-.anim-lead-dot:nth-child(6) { left: 80%; }
+.anim-lead-dot { left: calc(18% + var(--i) * 12.4%); }
+
 .anim-check {
   position: absolute;
   bottom: 25%;
   color: var(--color-primary);
   opacity: 0;
 }
-.anim-check:nth-child(7) { left: 35%; }
-.anim-check:nth-child(8) { left: 50%; }
-.anim-check:nth-child(9) { left: 65%; }
+.anim-check { left: calc(35% + var(--i) * 15%); }
 
 /* === Catálogo: product shelf === */
 .anim-shelf-item {
