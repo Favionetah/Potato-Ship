@@ -5,7 +5,7 @@
         <div class="footer__brand">
           <router-link to="/" class="footer__logo">
             <span class="footer__logo-icon">&lt;/&gt;</span>
-            <span>Potato<span class="gradient-text">Web</span></span>
+            <span>Potato<span class="gradient-text">Ship</span></span>
           </router-link>
           <p class="footer__desc">
             Creamos sitios web estáticos modernos y profesionales para impulsar tu negocio en internet.
@@ -21,8 +21,8 @@
 
         <div class="footer__col">
           <h4 class="footer__heading">Contacto</h4>
-          <a href="mailto:hola@potatoweb.com" class="footer__link">hola@potatoweb.com</a>
-          <a href="#" class="footer__link">GitHub</a>
+          <a href="mailto:hola@potatoweb.com" class="footer__link">faviosandy30@gmail.com</a>
+          <a href="https://github.com/Favionetah" class="footer__link">GitHub</a>
         </div>
       </div>
 
