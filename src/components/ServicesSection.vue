@@ -59,8 +59,16 @@
                   <div class="anim-morph"></div>
                 </template>
                 <template v-else-if="s.id === 'mantenimiento'">
-                  <div class="anim-gear"></div>
-                  <div v-for="n in 4" :key="n" class="anim-gear-dot" :style="{ '--i': n - 1 }"></div>
+                  <svg class="anim-nut" width="52" height="52" viewBox="0 0 52 52">
+                    <polygon points="26,2 46.8,14 46.8,38 26,50 5.2,38 5.2,14"
+                             fill="rgba(255,3,2,0.15)"
+                             stroke="rgba(255,3,2,0.6)"
+                             stroke-width="2"/>
+                    <circle cx="26" cy="26" r="7"
+                            fill="#364452"
+                            stroke="rgba(255,3,2,0.3)"
+                            stroke-width="1"/>
+                  </svg>
                 </template>
                 <template v-else-if="s.id === 'optimizacion'">
                   <div class="anim-speed-bar"></div>
@@ -692,53 +700,25 @@ onMounted(() => {
   left: 47%;
   width: 70px;
   height: 70px;
-  margin-left: -25px;
-  margin-top: -25px;
+  margin-left: -35px;
+  margin-top: -35px;
   background: rgba(78, 111, 130, 0.5);
-  border: 1px solid rgba(78, 111, 130, 1);
+  border: 2px solid rgba(78, 111, 130, 1);
   border-radius: 50%;
-  opacity: 0;
+  opacity: 1;
 }
 
-/* === Mantenimiento: gear === */
-.anim-gear {
+/* === Mantenimiento: tuerca hexagonal === */
+.anim-nut {
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 44px;
-  height: 44px;
-  margin-left: -22px;
-  margin-top: -22px;
-  border-radius: 50%;
-  border: 2px solid rgba(255, 3, 2, 0.12);
+  width: 52px;
+  height: 52px;
+  margin-left: -26px;
+  margin-top: -26px;
   opacity: 0;
 }
-.anim-gear::before {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 16px;
-  height: 16px;
-  margin: -8px 0 0 -8px;
-  border-radius: 50%;
-  background: rgba(255, 3, 2, 0.06);
-}
-.anim-gear-dot {
-  position: absolute;
-  width: 5px;
-  height: 5px;
-  border-radius: 50%;
-  background: rgba(255, 3, 2, 0.15);
-  top: 50%;
-  left: 50%;
-  margin-top: -2.5px;
-  margin-left: -2.5px;
-}
-.anim-gear-dot:nth-child(2) { margin-left: -24px; }
-.anim-gear-dot:nth-child(3) { margin-left: 19px; }
-.anim-gear-dot:nth-child(4) { margin-top: -24px; }
-.anim-gear-dot:nth-child(5) { margin-top: 19px; }
 
 /* === Optimización: speed bar === */
 .anim-speed-bar {

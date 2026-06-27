@@ -206,7 +206,7 @@ export function useGsap() {
       case 'informativa': {
         const shape = container.querySelector('.anim-morph')
         gsap.set(shape, { borderRadius: '50%', scale: 0.7, opacity: 0, clipPath: 'polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)' })
-        tl.to(shape, { scale: 1, opacity: 0.5, duration: 0.5, ease: 'back.out(1.7)' })
+        tl.to(shape, { scale: 1, opacity: 1, duration: 0.5, ease: 'back.out(1.7)' })
         tl.to(shape, { borderRadius: '4px', duration: 0.35, ease: 'back.out(1.7)' })
         tl.to(shape, {
           borderRadius: '0%',
@@ -217,14 +217,9 @@ export function useGsap() {
         break
       }
       case 'mantenimiento': {
-        const gear = container.querySelector('.anim-gear')
-        const dots = container.querySelectorAll('.anim-gear-dot')
-        gsap.set(gear, { rotation: 0, opacity: 0 })
-        gsap.set(dots, { scale: 0, opacity: 0 })
-        tl.to(gear, { rotation: 360, opacity: 0.5, duration: 0.8, ease: 'power1.inOut' })
-        tl.to(dots, {
-          scale: 1, opacity: 0.3, stagger: 0.06, duration: 0.2, ease: 'back.out(2)'
-        }, '-=0.5')
+        const nut = container.querySelector('.anim-nut')
+        gsap.set(nut, { rotation: 0, opacity: 0 })
+        tl.to(nut, { rotation: 360, opacity: 0.7, duration: 0.8, ease: 'back.out(1.5)' })
         break
       }
       case 'optimizacion': {
