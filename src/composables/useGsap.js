@@ -249,13 +249,25 @@ export function useGsap() {
       case 'publicacion': {
         const rocket = container.querySelector('.anim-rocket')
         const flames = container.querySelectorAll('.anim-flame')
-        gsap.set(rocket, { y: 15, opacity: 0 })
-        gsap.set(flames, { y: 8, opacity: 0, scale: 0.7 })
-        tl.to(rocket, { y: -12, opacity: 0.6, duration: 0.45, ease: 'power2.out' })
+
+        gsap.set(rocket, { y: 20, opacity: 0, scale: 0.85 })
+        gsap.set(flames, { y: 10, opacity: 0, scale: 0.4 })
+
+        tl.to(rocket, {
+          y: -20, opacity: 0.85, scale: 1, duration: 0.6,
+          ease: 'power2.inOut'
+        })
         tl.to(flames, {
-          y: -4, opacity: 0.4, scale: 1,
-          stagger: 0.03, duration: 0.3, ease: 'power2.out'
-        }, '-=0.35')
+          y: -6, opacity: 0.6, scale: 1.3,
+          stagger: 0.02, duration: 0.3, ease: 'sine.out'
+        }, '-=0.45')
+        tl.to(rocket, {
+          x: '+=1.5', duration: 0.05, repeat: 3, yoyo: true, ease: 'sine.inOut'
+        }, '-=0.3')
+        tl.to(flames, {
+          scale: 1.5, opacity: 0.8,
+          duration: 0.08, repeat: 1, yoyo: true, ease: 'sine.inOut'
+        }, '-=0.05')
         break
       }
     }

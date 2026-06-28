@@ -335,7 +335,7 @@ onMounted(() => {
   padding: 1.5rem;
   display: flex;
   flex-direction: column;
-  cursor: default;
+  cursor: none;
               transition: border-color 0.3s ease,
               box-shadow 0.3s ease;
   overflow: hidden;
@@ -596,8 +596,8 @@ onMounted(() => {
   bottom: 8%;
   background: rgba(255, 3, 2, 0.1);
   border: 1px solid rgba(255, 3, 2, 0.25);
-  transform-origin: bottom center;
-  opacity: 0;
+  transform-origin: center;
+  opacity: 1;
 }
 .anim-building:nth-child(1) { left: 8%; width: 18%; height: 55%; }
 .anim-building:nth-child(2) { left: 28%; width: 14%; height: 40%; }
@@ -734,9 +734,9 @@ onMounted(() => {
 .anim-speed-trail {
   position: absolute;
   height: 2px;
-  background: rgba(255, 3, 2, 0.12);
-  border-radius: 0 2px 2px 0;
-  opacity: 0;
+  background: rgba(255, 3, 2, 0.7);
+  border-radius: 0 2px 5px 0;
+  opacity: 1;
 }
 .anim-speed-trail:nth-child(2) { top: 38%; width: 25%; }
 .anim-speed-trail:nth-child(3) { top: 52%; width: 30%; }
@@ -758,7 +758,7 @@ onMounted(() => {
   position: absolute;
   top: 50%;
   left: 50%;
-  border: 1px solid rgba(255, 3, 2, 0.1);
+  border: 1px solid rgba(255, 3, 2, 0.5);
   border-radius: 50%;
   opacity: 0;
 }
@@ -769,32 +769,32 @@ onMounted(() => {
 /* === Publicación: rocket launch === */
 .anim-rocket {
   position: absolute;
-  top: 50%;
+  top: 46%;
   left: 50%;
-  margin-left: -6px;
-  margin-top: 4px;
-  width: 0;
-  height: 0;
-  border-left: 6px solid transparent;
-  border-right: 6px solid transparent;
-  border-bottom: 14px solid rgba(78, 111, 130, 0.15);
-  transform: rotate(180deg);
+  margin-left: -15px;
+  margin-top: -12px;
+  border: 3px solid rgb(49, 79, 97);
+  width: 25px;
+  height: 50px;
+  background: rgb(78, 111, 130);
+  clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
   opacity: 0;
 }
 .anim-flame {
   position: absolute;
-  width: 4px;
-  height: 4px;
-  border-radius: 50%;
-  background: rgba(255, 3, 2, 0.2);
-  left: 50%;
+  width: 3px;
+  height: 3px;
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-top: 7px solid rgba(255, 3, 2, 1);
+  left: 49%;
   bottom: 30%;
   opacity: 0;
 }
-.anim-flame:nth-child(2) { margin-left: -10px; }
+.anim-flame:nth-child(2) { margin-left: -9px; }
 .anim-flame:nth-child(3) { margin-left: -3px; }
-.anim-flame:nth-child(4) { margin-left: 4px; }
-.anim-flame:nth-child(5) { margin-left: 11px; }
+.anim-flame:nth-child(4) { margin-left: 3px; }
+.anim-flame:nth-child(5) { margin-left: 9px; }
 
 @media (max-width: 768px) {
   .bento-grid {

@@ -6,7 +6,7 @@
     </div>
 
     <div class="container hero__content" ref="contentRef">
-      <span class="tag hero__tag" ref="tagRef">Desarrollo web empresarial</span>
+      <span class="tag hero__tag" ref="tagRef">Desarrollo web Personal y Empresarial</span>
       <h1 class="hero__title" ref="titleRef">Tu negocio merece una web profesional</h1>
       <p class="hero__subtitle" ref="subtitleRef">
         Creamos sitios web estáticos modernos, ultrarrápidos y optimizados para convertir visitantes en clientes. Accesibles, sin complicaciones y llamativas.

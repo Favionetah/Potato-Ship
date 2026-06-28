@@ -41,7 +41,6 @@ const isMenuOpen = ref(false)
 
 const links = [
   { path: '/', label: 'Inicio' },
-  { path: '/servicios', label: 'Servicios' }
 ]
 
 function isActive(path) {
@@ -116,16 +115,17 @@ onBeforeUnmount(() => {
 .navbar__links {
   display: flex;
   align-items: center;
-  gap: 0.25rem;
+  gap: 1.5rem;
 }
 
 .navbar__link {
-  padding: 0.5rem 1rem;
+  padding: 0.5rem 2rem;
   border-radius: var(--border-radius);
   color: var(--color-text-muted);
   font-size: 0.9375rem;
   font-weight: 500;
   transition: color var(--transition), background var(--transition);
+
 }
 
 .navbar__link:hover {
@@ -150,7 +150,7 @@ onBeforeUnmount(() => {
   gap: 5px;
   background: none;
   border: none;
-  cursor: pointer;
+  cursor: none;
   padding: 0.5rem;
 }
 
