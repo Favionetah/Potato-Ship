@@ -27,6 +27,7 @@
               id="name"
               v-model="form.name"
               type="text"
+              name="name"
               class="form__input"
               placeholder="Tu nombre"
               required
@@ -38,6 +39,7 @@
               id="email"
               v-model="form.email"
               type="email"
+              name="email"
               class="form__input"
               placeholder="tu@correo.com"
               required
@@ -45,7 +47,7 @@
           </div>
           <div class="form__group">
             <label for="project" class="form__label">Tipo de proyecto</label>
-            <select id="project" v-model="form.project" class="form__input form__select">
+            <select id="project" v-model="form.project" name="title" class="form__input form__select">
               <option value="" disabled>Selecciona una opción</option>
               <option value="corporativa">Web corporativa</option>
               <option value="landing">Landing page</option>
@@ -61,6 +63,7 @@
             <textarea
               id="message"
               v-model="form.message"
+              name="message"
               class="form__input form__textarea"
               placeholder="Cuéntanos sobre tu proyecto..."
               rows="4"
@@ -79,6 +82,9 @@
 <script setup>
 import { ref, reactive, onMounted } from 'vue'
 import { useGsap } from '@/composables/useGsap'
+import emailjs from '@emailjs/browser'
+
+emailjs.init({ publicKey: "Gb36_UuUWhX9lxwbb" })
 
 const sectionRef = ref(null)
 const infoRef = ref(null)
@@ -95,14 +101,24 @@ const form = reactive({
 
 function handleSubmit() {
   submitting.value = true
-  setTimeout(() => {
+  emailjs.send("service_39vm8om", "template_byp3oxh", {
+    title: form.project,
+    name: form.name,
+    email: form.email,
+    message: form.message,
+    time: new Date().toLocaleString(),
+  }).then(() => {
     submitting.value = false
     alert('¡Gracias por contactarnos! Te responderemos en menos de 24 horas.')
     form.name = ''
     form.email = ''
     form.project = ''
     form.message = ''
-  }, 1000)
+  }).catch((error) => {
+    submitting.value = false
+    alert('Error al enviar. Intenta de nuevo.')
+    console.error(error)
+  })
 }
 
 onMounted(() => {
