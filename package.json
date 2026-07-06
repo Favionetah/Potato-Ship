@@ -1,10 +1,10 @@
 {
-  "name": "potatoweb",
+  "name": "acosmia",
   "private": true,
   "version": "1.0.0",
   "type": "module",
   "description": "Static websites for your business — crafted with care, deployed with speed.",
-  "author": "PotatoWeb",
+  "author": "acosmia",
   "license": "MIT",
   "scripts": {
     "dev": "vite",

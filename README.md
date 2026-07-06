@@ -1,7 +1,7 @@
 <div align="center">
   <br />
   <pre>&lt;/&gt;</pre>
-  <h1 align="center">PotatoWeb</h1>
+  <h1 align="center">acosmia</h1>
   <p align="center">
     <strong>Sitios web estáticos profesionales para tu negocio</strong>
     <br />
@@ -52,7 +52,7 @@
 ## 📁 Estructura del proyecto
 
 ```
-potatoweb/
+acosmia/
 ├── .github/workflows/      # CI/CD pipelines
 ├── public/                 # Archivos estáticos (favicon, robots.txt)
 ├── src/
@@ -93,8 +93,8 @@ potatoweb/
 
 ```bash
 # 1. Clonar el repositorio
-git clone https://github.com/tu-usuario/potatoweb.git
-cd potatoweb
+git clone https://github.com/tu-usuario/acosmia.git
+cd acosmia
 
 # 2. Instalar dependencias
 npm install

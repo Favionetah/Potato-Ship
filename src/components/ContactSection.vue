@@ -10,17 +10,17 @@
           </p>
           <div class="contact__details">
             <div class="contact__detail">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+              <img src="@/assets/icons/carta-icon.png" alt="Correo" width="20" height="20" class="contact__custom-icon">
               <span>faviosandy30@gmail.com</span>
             </div>
-            <div class="contact__detail">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0020 4.77 5.07 5.07 0 0019.91 1S18.73.65 16 2.48a13.38 13.38 0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 005 4.77a5.44 5.44 0 00-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 009 18.13V22"/></svg>
-              <span>https://github.com/Favionetah/Potato-Ship</span>
-            </div>
+            <a href="https://wa.me/TU_NUMERO_AQUI" target="_blank" class="contact__detail">
+              <img src="@/assets/icons/phone-icon.png" alt="WhatsApp" width="20" height="20" class="contact__custom-icon">
+              <span>Escríbenos por WhatsApp</span>
+            </a>
           </div>
         </div>
 
-        <form class="contact__form" ref="formRef" @submit.prevent="handleSubmit">
+        <form v-if="!submitted" class="contact__form" ref="formRef" @submit.prevent="handleSubmit">
           <div class="form__group">
             <label for="name" class="form__label">Nombre</label>
             <input
@@ -74,13 +74,23 @@
             {{ submitting ? 'Enviando...' : 'Enviar mensaje' }}
           </button>
         </form>
+
+        <div v-else class="contact__thankyou" ref="thankyouRef">
+          <div class="thankyou__emoji">:)</div>
+          <h3>¡Gracias por contactarnos!</h3>
+          <p class="thankyou__text">Te responderemos en menos de 24 horas.</p>
+          <p class="thankyou__whatsapp-text">¿Prefieres hablar directo?</p>
+          <a href="https://wa.me/+59177751832" target="_blank" class="btn btn-whatsapp">
+            Escríbenos por WhatsApp
+          </a>
+        </div>
       </div>
     </div>
   </section>
 </template>
 
 <script setup>
-import { ref, reactive, onMounted } from 'vue'
+import { ref, reactive, onMounted, nextTick } from 'vue'
 import { useGsap } from '@/composables/useGsap'
 import emailjs from '@emailjs/browser'
 
@@ -89,8 +99,30 @@ emailjs.init({ publicKey: "Gb36_UuUWhX9lxwbb" })
 const sectionRef = ref(null)
 const infoRef = ref(null)
 const formRef = ref(null)
+const thankyouRef = ref(null)
+const SIMULATE = true
 const submitting = ref(false)
+const COOLDOWN = 30 * 60 * 1000 // 30 minutos
+const submitted = ref(
+  localStorage.getItem('lastSend') !== null
+  && Date.now() - Number(localStorage.getItem('lastSend')) < COOLDOWN
+)
 const { gsap, scrollReveal } = useGsap()
+
+function animateThankYou() {
+  if (!thankyouRef.value) return
+  gsap.fromTo(thankyouRef.value,
+    { opacity: 0, y: 30, scale: 0.95 },
+    { opacity: 1, y: 0, scale: 1, duration: 0.6, ease: 'power3.out' }
+  )
+  const emoji = thankyouRef.value.querySelector('.thankyou__emoji')
+  if (emoji) {
+    gsap.fromTo(emoji,
+      { scale: 0, rotation: -30 },
+      { scale: 1, rotation: 0, duration: 0.5, ease: 'back.out(2)', delay: 0.2 }
+    )
+  }
+}
 
 const form = reactive({
   name: '',
@@ -101,29 +133,43 @@ const form = reactive({
 
 function handleSubmit() {
   submitting.value = true
-  emailjs.send("service_39vm8om", "template_byp3oxh", {
-    title: form.project,
-    name: form.name,
-    email: form.email,
-    message: form.message,
-    time: new Date().toLocaleString(),
-  }).then(() => {
+
+  const onSuccess = () => {
     submitting.value = false
-    alert('¡Gracias por contactarnos! Te responderemos en menos de 24 horas.')
+    submitted.value = true
+    localStorage.setItem('lastSend', Date.now())
     form.name = ''
     form.email = ''
     form.project = ''
     form.message = ''
-  }).catch((error) => {
+    nextTick(() => animateThankYou())
+  }
+
+  const onError = (error) => {
     submitting.value = false
     alert('Error al enviar. Intenta de nuevo.')
     console.error(error)
-  })
+  }
+
+  if (!SIMULATE) {
+    emailjs.send("service_39vm8om", "template_byp3oxh", {
+      title: form.project,
+      name: form.name,
+      email: form.email,
+      message: form.message,
+      time: new Date().toLocaleString(),
+    }).then(onSuccess).catch(onError)
+  } else {
+    setTimeout(onSuccess, 1500)
+  }
 }
 
 onMounted(() => {
   scrollReveal(infoRef.value, { duration: 0.8 })
   scrollReveal(formRef.value, { duration: 0.8, delay: 0.2 })
+  if (submitted.value) {
+    animateThankYou()
+  }
 })
 </script>
 
@@ -164,12 +210,23 @@ onMounted(() => {
   gap: 0.75rem;
   color: var(--color-text-muted);
   font-size: 0.9375rem;
+  text-decoration: none;
+  transition: color var(--transition);
+}
+
+.contact__detail:hover {
+  color: var(--color-primary);
 }
 
 .contact__detail svg {
   color: var(--color-primary);
   flex-shrink: 0;
   opacity: 0.7;
+}
+
+.contact__custom-icon {
+  filter: brightness(0) saturate(100%) invert(9%) sepia(94%) saturate(7487%) hue-rotate(360deg);
+  flex-shrink: 0;
 }
 
 .contact__form {
@@ -225,6 +282,64 @@ onMounted(() => {
 .form__textarea {
   resize: vertical;
   min-height: 100px;
+}
+
+.contact__thankyou {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 3rem 2rem;
+  gap: 1rem;
+  min-height: 300px;
+  color: var(--color-primary);
+  background: rgba(255, 3, 2, 0.04);
+  border: 1.5px solid rgba(255, 3, 2, 0.15);
+}
+
+.thankyou__emoji {
+  font-size: 4rem;
+  line-height: 1;
+  color: var(--color-primary);
+  text-shadow: 0 0 20px rgba(255, 3, 2, 0.3);
+}
+
+.contact__thankyou h3 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--color-primary);
+}
+
+.thankyou__text {
+  color: var(--color-text);
+  font-size: 1rem;
+}
+
+.thankyou__whatsapp-text {
+  color: var(--color-text);
+  font-size: 0.9375rem;
+  margin-top: 0.5rem;
+}
+
+.btn-whatsapp {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: #25D366;
+  color: #fff;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0;
+  font-weight: 600;
+  font-size: 0.9375rem;
+  text-decoration: none;
+  transition: background var(--transition), transform var(--transition);
+}
+
+.btn-whatsapp:hover {
+  background: #1da851;
+  transform: translateY(-2px);
+  color: #fff;
 }
 
 @media (max-width: 768px) {

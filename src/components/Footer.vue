@@ -5,7 +5,7 @@
         <div class="footer__brand">
           <router-link to="/" class="footer__logo">
             <span class="footer__logo-icon">&lt;/&gt;</span>
-            <span>Potato<span class="gradient-text">Ship</span></span>
+            <span>acosmia</span>
           </router-link>
           <p class="footer__desc">
             Creamos sitios web estáticos modernos y profesionales para impulsar tu negocio en internet.
@@ -21,13 +21,13 @@
 
         <div class="footer__col">
           <h4 class="footer__heading">Contacto</h4>
-          <a href="mailto:hola@potatoweb.com" class="footer__link">faviosandy30@gmail.com</a>
+          <a href="mailto:hola@acosmia.com" class="footer__link">faviosandy30@gmail.com</a>
           <a href="https://github.com/Favionetah" class="footer__link">GitHub</a>
         </div>
       </div>
 
       <div class="footer__bottom">
-        <p>&copy; {{ year }} PotatoWeb. Todos los derechos reservados.</p>
+        <p>&copy; {{ year }} acosmia. Todos los derechos reservados.</p>
         <p class="footer__tech">Hecho con Vue 3 + Vite + GSAP</p>
       </div>
     </div>

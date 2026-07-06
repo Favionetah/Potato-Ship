@@ -1,4 +1,4 @@
-# AGENTS.md — PotatoWeb
+# AGENTS.md — acosmia
 
 ## Stack
 - Vue 3 + Composition API + Vite
@@ -10,27 +10,27 @@
 ## Commands
 | Command | Purpose |
 |---------|---------|
-| `npm run dev` | Dev server (HMR at localhost:5173) |
+| `npm run dev` | Dev server (HMR) |
 | `npm run build` | Production build to `dist/` |
 | `npm run preview` | Preview production build |
-| `npm run deploy` | `gh-pages -d dist` (pushes dist/ to gh-pages branch) |
+| `npm run deploy` | `gh-pages -d dist` (manual push to gh-pages branch) |
 
 No test, lint, typecheck, or formatter scripts.
 
-## Routes (only 3)
+## Routes (3 total)
 | Path | View | Content |
 |------|------|---------|
 | `/` | HomeView | HeroSection + ServicesSection + ContactSection |
 | `/contacto` | ContactView | Hero + ContactSection |
 | `*` | NotFoundView | 404 redirect |
 
-No standalone `/servicios` route — services are embedded in HomeView via `ServicesSection` component.
+No standalone `/servicios` — services are in `ServicesSection` embedded in HomeView.
 
 ## Architecture
-- `src/views/` — 3 page-level components (one per route), lazy-imported by router
-- `src/components/` — reusable sections (`HeroSection`, `ServicesSection`, `ContactSection`, `Navbar`, `Footer`)
+- `src/views/` — 3 page-level components, lazy-imported by router
+- `src/components/` — `HeroSection`, `ServicesSection`, `ContactSection`, `Navbar`, `Footer`
 - `src/composables/` — `useGsap` (GSAP helpers), `useScrollAnimations` (IntersectionObserver)
-- `App.vue` wraps Navbar + Footer + custom cursor overlay + `<Transition>` for page fade
+- `App.vue` wraps Navbar + Footer + custom cursor + `<Transition>` for page fade
 - `HomeView` composes HeroSection + ServicesSection + ContactSection; other views are standalone
 
 ## Color palette (vintage-tech)
@@ -41,50 +41,37 @@ No standalone `/servicios` route — services are embedded in HomeView via `Serv
 ```
 Full set in `src/styles/main.css`.
 
+## Contact form (EmailJS)
+- Uses `@emailjs/browser` (npm package, `import emailjs from '@emailjs/browser'` in `ContactSection.vue`)
+- Service ID, Template ID, and Public Key are hardcoded in `ContactSection.vue`
+- Free plan: 200 sends/month. Domain allowlist (anti-spam) is paid.
+- `const SIMULATE = true` bypasses EmailJS for local testing (1.5s fake delay). Set to `false` for real sends.
+- Cooldown: 30 min between submissions via localStorage timestamp. Shows thank-you/WhatsApp screen until cooldown expires.
+
 ## Deployment
-- **GitHub Pages (current)**: Root `index.html` redirects to `dist/index.html` via conditional script. `dist/` is committed and tracked.
-- **GitHub Actions (alternative)**: `.github/workflows/deploy.yml` — workflow uses `npm ci`. Requires Pages source set to "GitHub Actions" in repo Settings.
-- **Vercel**: needs `/* /index.html` rewrite (create `vercel.json`).
+- **GitHub Actions (current)**: `.github/workflows/deploy.yml` — `npm ci` + `vite build`. Requires Pages source set to "GitHub Actions" in repo Settings.
 - **Netlify**: needs `public/_redirects` with `/* /index.html 200`.
+- `GITHUB_ACTIONS` env var sets Vite `base: '/acosmia/'` in CI; local dev uses `/`.
 
 ## Critical gotchas
 
-### 1. Vite base — conditional for GitHub Pages subdirectory
+### 1. Vite base — conditional for CI
 ```js
-base: process.env.GITHUB_ACTIONS ? '/Potato-Ship/dist/' : '/'
+base: process.env.GITHUB_ACTIONS ? '/acosmia/' : '/'
 ```
-- CI build: assets at `/Potato-Ship/dist/assets/...`
-- Local dev: base `/`
-- **Do not hardcode** either value.
+CI builds serve assets from `/acosmia/assets/...`. Local dev uses `/`.
 
-### 2. Hash routing avoids SPA issues on GitHub Pages
-URLs: `/#/contacto`. No `BASE_URL` needed. No server-side redirect required.
-**README says `createWebHistory` but the router actually uses `createWebHashHistory`** — trust the router, not the README.
+### 2. Hash routing (README lies)
+README says `createWebHistory` but router actually uses `createWebHashHistory`. Trust the router, not the README.
 
-### 3. Root `index.html` conditional redirect to `dist/` on GitHub Pages
-Script guards against loop on `dist/index.html` itself. No-op on localhost.
+### 3. GSAP is global (`window.gsap`, `window.ScrollTrigger`)
+Import `useGsap` composable. Do NOT `npm install gsap`.
 
-### 4. `public/404.html` is a simple redirect to `index.html`
+### 4. Custom cursor (`App.vue`)
+Fixed overlay, `pointer-events: none; z-index: 10000`. `gsap.quickTo` for tracking. `MutationObserver` re-attaches hover listeners on DOM changes. Hidden on touch devices via `@media (hover: none)`.
 
-### 5. Bento grid wrapper pattern (`ServicesSection.vue`)
-- Grid items are `.bento-card-wrapper` (not `.bento-card`).
-- `is-active` on BOTH wrapper (`grid-column: 1 / -1`) and card (visual styles: row layout, enlarged icon).
-- FLIP animation captures wrapper `getBoundingClientRect()` before/after state change.
-- `.bento-card__right` needs `max-width: 0; max-height: 0; overflow: hidden` in inactive state.
-- Hover play/reverse on paused GSAP `animateServiceCard` timelines. Click toggles independent pin state (multiple cards can be active).
-- `animateServiceCard(type, container)` in `useGsap.js` — animated SVG illustrations per card type.
+### 5. Bento grid (`ServicesSection.vue`)
+`.bento-card-wrapper` (not `.bento-card`). `is-active` on BOTH wrapper and card. FLIP animation on wrapper `getBoundingClientRect()`. `.bento-card__right` needs `max-width: 0; max-height: 0; overflow: hidden` when inactive.
 
-### 6. GSAP is global (`window.gsap`, `window.ScrollTrigger`)
-Import `useGsap` composable. Do NOT npm-install gsap.
-
-### 7. Custom cursor (`App.vue`)
-- Fixed overlay with `pointer-events: none; z-index: 10000`.
-- Tracks mouse via `gsap.quickTo`. Hover expansion on `a, button, .btn, .service-card, input, textarea, select`.
-- `MutationObserver` re-attaches listeners on DOM changes.
-- Hidden on touch devices via `@media (hover: none)`.
-
-### 8. `dist/` is tracked in git (not in `.gitignore`)
-Required for the current GitHub Pages deployment strategy (root `index.html` redirects to `dist/index.html`).
-
-## Contact form
-Placeholder (`setTimeout` → `alert` + reset). To connect Formspree/Web3Forms, change the `<form>` `action` in `ContactSection.vue`.
+### 6. Custom PNG icons in `src/assets/icons/`
+Icons are black PNGs tinted red via CSS `filter` in `ContactSection.vue`.
