@@ -51,7 +51,7 @@ Full set in `src/styles/main.css`.
 ## Deployment
 - **GitHub Actions (current)**: `.github/workflows/deploy.yml` — `npm ci` + `vite build`. Requires Pages source set to "GitHub Actions" in repo Settings.
 - **Netlify**: needs `public/_redirects` with `/* /index.html 200`.
-- `GITHUB_ACTIONS` env var sets Vite `base: '/acosmia/'` in CI; local dev uses `/`.
+- `GITHUB_ACTIONS` env var sets Vite `base: '/Potato-Ship/'` in CI; local dev uses `/`.
 
 ## Critical gotchas
 
@@ -59,7 +59,7 @@ Full set in `src/styles/main.css`.
 ```js
 base: process.env.GITHUB_ACTIONS ? '/acosmia/' : '/'
 ```
-CI builds serve assets from `/acosmia/assets/...`. Local dev uses `/`.
+CI builds serve assets from `/Potato-Ship/assets/...`. Local dev uses `/`.
 
 ### 2. Hash routing (README lies)
 README says `createWebHistory` but router actually uses `createWebHashHistory`. Trust the router, not the README.
