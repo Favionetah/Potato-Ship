@@ -70,11 +70,9 @@
               required
             ></textarea>
           </div>
-          <div class="form__group">
-            <div class="g-recaptcha form__captcha" data-sitekey="6LdMKUktAAAAAJUndC7FD1bo7b1M_FCkvs7L2Zgx"></div>
-          </div>
+          <div v-if="captchaVisible" id="captcha-container" class="form__captcha"></div>
           <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center;" :disabled="submitting">
-            {{ submitting ? 'Enviando...' : 'Enviar mensaje' }}
+            {{ submitting ? 'Enviando...' : captchaVisible ? 'Resuelve el CAPTCHA' : 'Enviar mensaje' }}
           </button>
         </form>
 
@@ -105,6 +103,8 @@ const formRef = ref(null)
 const thankyouRef = ref(null)
 const SIMULATE = true
 const submitting = ref(false)
+const captchaVisible = ref(false)
+const captchaWidgetId = ref(null)
 const COOLDOWN = 30 * 60 * 1000 // 30 minutos
 const submitted = ref(
   localStorage.getItem('lastSend') !== null
@@ -134,45 +134,64 @@ const form = reactive({
   message: ''
 })
 
-function handleSubmit() {
+function onCaptchaSolved(token) {
   submitting.value = true
-
-  const onSuccess = () => {
-    submitting.value = false
-    submitted.value = true
-    localStorage.setItem('lastSend', Date.now())
-    form.name = ''
-    form.email = ''
-    form.project = ''
-    form.message = ''
-    grecaptcha.reset()
-    nextTick(() => animateThankYou())
-  }
-
-  const onError = (error) => {
-    submitting.value = false
-    alert('Error al enviar. Intenta de nuevo.')
-    console.error(error)
-  }
-
-  if (!SIMULATE) {
-    const token = grecaptcha.getResponse()
-    if (!token) {
-      submitting.value = false
-      alert('Por favor, verifica que no eres un robot.')
-      return
-    }
-    emailjs.send("service_39vm8om", "template_byp3oxh", {
-      title: form.project,
-      name: form.name,
-      email: form.email,
-      message: form.message,
-      time: new Date().toLocaleString(),
-      'g-recaptcha-response': token,
-    }).then(onSuccess).catch(onError)
-  } else {
+  if (SIMULATE) {
     setTimeout(onSuccess, 1500)
+    return
   }
+  emailjs.send("service_39vm8om", "template_byp3oxh", {
+    title: form.project,
+    name: form.name,
+    email: form.email,
+    message: form.message,
+    time: new Date().toLocaleString(),
+    'g-recaptcha-response': token,
+  }).then(onSuccess).catch(onError)
+}
+
+function handleSubmit() {
+  if (SIMULATE) {
+    submitting.value = true
+    setTimeout(onSuccess, 1500)
+    return
+  }
+  if (!captchaVisible.value) {
+    captchaVisible.value = true
+    nextTick(() => {
+      if (typeof grecaptcha !== 'undefined' && grecaptcha.render) {
+        captchaWidgetId.value = grecaptcha.render('captcha-container', {
+          sitekey: '6LdMKUktAAAAAJUndC7FD1bo7b1M_FCkvs7L2Zgx',
+          callback: onCaptchaSolved
+        })
+      }
+    })
+    return
+  }
+  alert('Por favor, resuelve el CAPTCHA para continuar.')
+}
+
+const onSuccess = () => {
+  submitting.value = false
+  submitted.value = true
+  localStorage.setItem('lastSend', Date.now())
+  form.name = ''
+  form.email = ''
+  form.project = ''
+  form.message = ''
+  if (captchaWidgetId.value !== null) {
+    grecaptcha.reset(captchaWidgetId.value)
+    captchaVisible.value = false
+    captchaWidgetId.value = null
+  }
+  nextTick(() => animateThankYou())
+}
+
+const onError = (error) => {
+  submitting.value = false
+  alert('Error al enviar. Intenta de nuevo.')
+  console.error(error)
+  grecaptcha.reset(captchaWidgetId.value)
 }
 
 onMounted(() => {
