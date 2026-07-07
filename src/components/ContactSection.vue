@@ -70,6 +70,9 @@
               required
             ></textarea>
           </div>
+          <div class="form__group">
+            <div class="g-recaptcha form__captcha" data-sitekey="6LdMKUktAAAAAJUndC7FD1bo7b1M_FCkvs7L2Zgx"></div>
+          </div>
           <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center;" :disabled="submitting">
             {{ submitting ? 'Enviando...' : 'Enviar mensaje' }}
           </button>
@@ -142,6 +145,7 @@ function handleSubmit() {
     form.email = ''
     form.project = ''
     form.message = ''
+    grecaptcha.reset()
     nextTick(() => animateThankYou())
   }
 
@@ -152,12 +156,19 @@ function handleSubmit() {
   }
 
   if (!SIMULATE) {
+    const token = grecaptcha.getResponse()
+    if (!token) {
+      submitting.value = false
+      alert('Por favor, verifica que no eres un robot.')
+      return
+    }
     emailjs.send("service_39vm8om", "template_byp3oxh", {
       title: form.project,
       name: form.name,
       email: form.email,
       message: form.message,
       time: new Date().toLocaleString(),
+      'g-recaptcha-response': token,
     }).then(onSuccess).catch(onError)
   } else {
     setTimeout(onSuccess, 1500)
@@ -282,6 +293,10 @@ onMounted(() => {
 .form__textarea {
   resize: vertical;
   min-height: 100px;
+}
+
+.form__captcha {
+  margin-bottom: 0.5rem;
 }
 
 .contact__thankyou {
