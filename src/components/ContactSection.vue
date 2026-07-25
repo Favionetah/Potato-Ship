@@ -1,5 +1,5 @@
 <template>
-  <section class="section contact" ref="sectionRef">
+  <section id="contacto" class="section contact" ref="sectionRef">
     <div class="container">
       <div class="contact__grid">
         <div class="contact__info" ref="infoRef">
@@ -13,7 +13,7 @@
               <img src="@/assets/icons/carta-icon.png" alt="Correo" width="20" height="20" class="contact__custom-icon">
               <span>faviosandy30@gmail.com</span>
             </div>
-            <a href="https://wa.me/TU_NUMERO_AQUI" target="_blank" class="contact__detail">
+            <a href="https://wa.me/+59177751832" target="_blank" class="contact__detail">
               <img src="@/assets/icons/phone-icon.png" alt="WhatsApp" width="20" height="20" class="contact__custom-icon">
               <span>Escríbenos por WhatsApp</span>
             </a>
@@ -21,6 +21,7 @@
         </div>
 
         <form v-if="!submitted" class="contact__form" ref="formRef" @submit.prevent="handleSubmit">
+          <div v-if="formError" class="form__error">{{ formError }}</div>
           <div class="form__group">
             <label for="name" class="form__label">Nombre</label>
             <input
@@ -93,19 +94,16 @@
 <script setup>
 import { ref, reactive, onMounted, nextTick } from 'vue'
 import { useGsap } from '@/composables/useGsap'
-import emailjs from '@emailjs/browser'
-
-emailjs.init({ publicKey: "Gb36_UuUWhX9lxwbb" })
 
 const sectionRef = ref(null)
 const infoRef = ref(null)
 const formRef = ref(null)
 const thankyouRef = ref(null)
-const SIMULATE = true
 const submitting = ref(false)
+const formError = ref('')
 const captchaVisible = ref(false)
 const captchaWidgetId = ref(null)
-const COOLDOWN = 30 * 60 * 1000 // 30 minutos
+const COOLDOWN = 30 * 60 * 1000
 const submitted = ref(
   localStorage.getItem('lastSend') !== null
   && Date.now() - Number(localStorage.getItem('lastSend')) < COOLDOWN
@@ -134,28 +132,37 @@ const form = reactive({
   message: ''
 })
 
-function onCaptchaSolved(token) {
+async function onCaptchaSolved(token) {
   submitting.value = true
-  if (SIMULATE) {
-    setTimeout(onSuccess, 1500)
-    return
+  formError.value = ''
+
+  try {
+    const res = await fetch('/api/contact', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        name: form.name,
+        email: form.email,
+        project: form.project,
+        message: form.message,
+        captchaToken: token
+      })
+    })
+
+    const data = await res.json()
+
+    if (!res.ok) {
+      throw new Error(data.error || 'Error al enviar el mensaje.')
+    }
+
+    onSuccess()
+  } catch (err) {
+    onError(err)
   }
-  emailjs.send("service_39vm8om", "template_byp3oxh", {
-    title: form.project,
-    name: form.name,
-    email: form.email,
-    message: form.message,
-    time: new Date().toLocaleString(),
-    'g-recaptcha-response': token,
-  }).then(onSuccess).catch(onError)
 }
 
 function handleSubmit() {
-  if (SIMULATE) {
-    submitting.value = true
-    setTimeout(onSuccess, 1500)
-    return
-  }
+  formError.value = ''
   if (!captchaVisible.value) {
     captchaVisible.value = true
     nextTick(() => {
@@ -189,8 +196,7 @@ const onSuccess = () => {
 
 const onError = (error) => {
   submitting.value = false
-  alert('Error al enviar. Intenta de nuevo.')
-  console.error(error)
+  formError.value = error.message || 'Error al enviar. Intenta de nuevo.'
   grecaptcha.reset(captchaWidgetId.value)
 }
 
@@ -206,6 +212,7 @@ onMounted(() => {
 <style scoped>
 .contact {
   position: relative;
+  scroll-margin-top: 80px;
 }
 
 .contact__grid {
@@ -316,6 +323,14 @@ onMounted(() => {
 
 .form__captcha {
   margin-bottom: 0.5rem;
+}
+
+.form__error {
+  background: rgba(255, 3, 2, 0.08);
+  border: 1px solid rgba(255, 3, 2, 0.2);
+  padding: 0.75rem 1rem;
+  font-size: 0.875rem;
+  color: var(--color-primary);
 }
 
 .contact__thankyou {

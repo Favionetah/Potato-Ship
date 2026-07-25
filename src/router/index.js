@@ -6,12 +6,6 @@ const routes = [
     name: 'Home',
     component: () => import('@/views/HomeView.vue')
   },
-
-  {
-    path: '/contacto',
-    name: 'Contact',
-    component: () => import('@/views/ContactView.vue')
-  },
   {
     path: '/:pathMatch(.*)*',
     name: 'NotFound',

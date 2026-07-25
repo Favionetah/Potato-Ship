@@ -12,15 +12,15 @@
         Creamos sitios web estáticos modernos, ultrarrápidos y optimizados para convertir visitantes en clientes. Accesibles, sin complicaciones y llamativas.
       </p>
       <div class="hero__actions" ref="actionsRef">
-        <router-link to="/contacto" class="btn btn-primary">
+        <a href="#contacto" class="btn btn-primary">
           Solicitar cotización
           <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
             <path d="M4 10H16M16 10L11 5M16 10L11 15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
-        </router-link>
-        <router-link to="/servicios" class="btn btn-secondary">
+        </a>
+        <a href="#servicios" class="btn btn-secondary">
           Ver servicios
-        </router-link>
+        </a>
       </div>
     </div>
 
@@ -63,19 +63,27 @@ onMounted(() => {
 
   tl.fromTo(tagRef.value, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' }, 1)
 
-  const chars = splitTextToSpans(titleRef.value)
-  tl.fromTo(chars,
-    { opacity: 0, y: 40, rotateX: -90 },
-    {
-      opacity: 1,
-      y: 0,
-      rotateX: 0,
-      duration: 0.5,
-      stagger: 0.03,
-      ease: 'back.out(1.7)'
-    },
-    '-=0.3'
-  )
+  if (window.innerWidth > 768) {
+    const chars = splitTextToSpans(titleRef.value)
+    tl.fromTo(chars,
+      { opacity: 0, y: 40, rotateX: -90 },
+      {
+        opacity: 1,
+        y: 0,
+        rotateX: 0,
+        duration: 0.5,
+        stagger: 0.03,
+        ease: 'back.out(1.7)'
+      },
+      '-=0.3'
+    )
+  } else {
+    tl.fromTo(titleRef.value,
+      { opacity: 0, y: 20 },
+      { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' },
+      '-=0.3'
+    )
+  }
 
   tl.fromTo(subtitleRef.value, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' }, '-=0.2')
   tl.fromTo(actionsRef.value, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' }, '-=0.2')
@@ -210,6 +218,15 @@ onMounted(() => {
 }
 
 @media (max-width: 768px) {
+  .hero__title {
+    font-size: clamp(2rem, 8vw, 2.8rem);
+  }
+
+  .hero__title span {
+    display: inline;
+    white-space: normal;
+  }
+
   .hero__shape {
     display: none;
   }
@@ -217,6 +234,12 @@ onMounted(() => {
   .hero__actions {
     flex-direction: column;
     align-items: center;
+  }
+
+  .hero__actions .btn {
+    width: 100%;
+    max-width: 280px;
+    justify-content: center;
   }
 }
 </style>

@@ -7,19 +7,15 @@
       </router-link>
 
       <nav class="navbar__links" :class="{ 'navbar__links--open': isMenuOpen }">
-        <router-link
-          v-for="link in links"
-          :key="link.path"
-          :to="link.path"
-          class="navbar__link"
-          :class="{ 'navbar__link--active': isActive(link.path) }"
-          @click="closeMenu"
-        >
-          {{ link.label }}
+        <router-link to="/" class="navbar__link" @click="closeMenu">
+          Inicio
         </router-link>
-        <router-link to="/contacto" class="btn btn-primary navbar__cta" @click="closeMenu">
-          Contáctanos
-        </router-link>
+        <a href="#planes" class="navbar__link" @click="closeMenu">
+          Planes
+        </a>
+        <a href="#contacto" class="navbar__link" @click="closeMenu">
+          Contacto
+        </a>
       </nav>
 
       <button class="navbar__toggle" @click="toggleMenu" aria-label="Toggle menu">
@@ -32,21 +28,10 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
-import { useRoute } from 'vue-router'
+import { ref, onMounted, onBeforeUnmount } from 'vue'
 
-const route = useRoute()
 const isScrolled = ref(false)
 const isMenuOpen = ref(false)
-
-const links = [
-  { path: '/', label: 'Inicio' },
-]
-
-function isActive(path) {
-  if (path === '/') return route.path === '/'
-  return route.path.startsWith(path)
-}
 
 function toggleMenu() {
   isMenuOpen.value = !isMenuOpen.value
@@ -138,11 +123,7 @@ onBeforeUnmount(() => {
   background: rgba(255, 3, 2, 0.08);
 }
 
-.navbar__cta {
-  margin-left: 0.5rem;
-  padding: 0.5rem 1.25rem;
-  font-size: 0.875rem;
-}
+
 
 .navbar__toggle {
   display: none;
@@ -170,37 +151,29 @@ onBeforeUnmount(() => {
 
   .navbar__links {
     position: fixed;
-    top: 0;
-    right: -100%;
-    width: 280px;
-    height: 100vh;
-    background: var(--color-bg-alt);
+    top: -100%;
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: auto;
+    background: var(--color-bg);
     flex-direction: column;
     padding: 5rem 2rem 2rem;
-    gap: 0.5rem;
-    transition: right 0.3s ease;
-    box-shadow: -4px 0 20px rgba(0, 0, 0, 0.5);
+    gap: 0.75rem;
+    transition: top 0.35s ease;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+    border-bottom: 1px solid var(--color-border);
   }
 
   .navbar__links--open {
-    right: 0;
-  }
-
-  .navbar__links {
-    background: var(--color-bg);
+    top: 0;
   }
 
   .navbar__link {
     width: 100%;
     padding: 0.75rem 1rem;
     font-size: 1.125rem;
-  }
-
-  .navbar__cta {
-    width: 100%;
-    margin-left: 0;
-    margin-top: 1rem;
-    justify-content: center;
+    text-align: center;
   }
 }
 </style>

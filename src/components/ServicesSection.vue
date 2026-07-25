@@ -1,5 +1,5 @@
 <template>
-  <section class="section bento-services" ref="sectionRef">
+  <section id="servicios" class="section bento-services" ref="sectionRef">
     <div class="container">
       <div class="bento__header" ref="headerRef">
         <span class="tag">Servicios</span>
