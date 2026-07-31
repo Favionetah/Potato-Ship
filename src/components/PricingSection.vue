@@ -536,7 +536,7 @@ onBeforeUnmount(() => {
   color: var(--color-text-muted);
   font-size: 0.875rem;
   font-weight: 600;
-  cursor: none;
+  cursor: pointer;
   transition: color 0.3s ease, background 0.3s ease;
   position: relative;
   z-index: 1;
@@ -777,7 +777,7 @@ onBeforeUnmount(() => {
   color: var(--color-text-muted);
   font-size: 0.8125rem;
   font-weight: 600;
-  cursor: none;
+  cursor: pointer;
   transition: color 0.3s ease, border-color 0.3s ease, background 0.3s ease;
 }
 
@@ -881,7 +881,7 @@ onBeforeUnmount(() => {
   border: none;
   color: var(--color-text-muted);
   font-size: 1.5rem;
-  cursor: none;
+  cursor: pointer;
   line-height: 1;
   transition: color 0.2s ease;
   z-index: 1;

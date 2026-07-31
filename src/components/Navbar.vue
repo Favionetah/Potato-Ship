@@ -146,7 +146,7 @@ onBeforeUnmount(() => {
   gap: 5px;
   background: none;
   border: none;
-  cursor: none;
+  cursor: pointer;
   padding: 0.5rem;
 }
 
@@ -205,7 +205,7 @@ onBeforeUnmount(() => {
     border: none;
     color: var(--color-text);
     font-size: 2rem;
-    cursor: none;
+    cursor: pointer;
     line-height: 1;
     transition: color var(--transition);
   }

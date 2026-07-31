@@ -335,7 +335,7 @@ onMounted(() => {
   padding: 1.5rem;
   display: flex;
   flex-direction: column;
-  cursor: none;
+  cursor: pointer;
               transition: border-color 0.3s ease,
               box-shadow 0.3s ease;
   overflow: hidden;
