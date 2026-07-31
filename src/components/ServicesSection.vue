@@ -254,14 +254,16 @@ function onEnter(i) {
     leaveTimers[i] = null
   }
   if (!cardStates[i].pinned) {
-    cardStates[i].tl?.play()
+    cardStates[i].tl?.restart()
   }
 }
 
 function onLeave(i) {
   cardStates[i].hovered = false
-  if (!cardStates[i].pinned) {
-    cardStates[i].tl?.reverse()
+    if (!cardStates[i].pinned) {
+    cardStates[i].tl?.progress(1)
+
+
   }
 }
 
@@ -289,7 +291,10 @@ function onClick(i) {
 onMounted(() => {
   scrollReveal(headerRef.value, { duration: 0.8 })
   animRefs.value.forEach((el, i) => {
-    if (el) cardStates[i].tl = animateServiceCard(services[i].id, el)
+    if (el) {
+      cardStates[i].tl = animateServiceCard(services[i].id, el)
+      cardStates[i].tl.progress(1)
+    }
   })
 })
 </script>
