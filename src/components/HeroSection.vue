@@ -178,6 +178,8 @@ onMounted(() => {
   margin-bottom: 1.5rem;
   color: var(--color-text);
   letter-spacing: -0.02em;
+  text-wrap: balance;
+  word-break: keep-all;
 }
 
 .hero__subtitle {
@@ -219,12 +221,13 @@ onMounted(() => {
 
 @media (max-width: 768px) {
   .hero__title {
-    font-size: clamp(2rem, 8vw, 2.8rem);
+    font-size: clamp(1.75rem, 7vw, 2.8rem);
   }
 
   .hero__title span {
     display: inline;
     white-space: normal;
+    word-break: normal;
   }
 
   .hero__shape {

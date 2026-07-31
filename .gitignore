@@ -4,3 +4,11 @@ dist
 *.local
 .env
 .env.*
+
+# Documentacion privada
+AGENTS.md
+logicaNegocio.md
+PRODUCT.md
+
+# Skills externos
+.github/

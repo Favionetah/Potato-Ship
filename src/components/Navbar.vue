@@ -7,6 +7,9 @@
       </router-link>
 
       <nav class="navbar__links" :class="{ 'navbar__links--open': isMenuOpen }">
+        <button class="navbar__close" @click="closeMenu" aria-label="Cerrar menú">
+          &times;
+        </button>
         <router-link to="/" class="navbar__link" @click="closeMenu">
           Inicio
         </router-link>
@@ -150,23 +153,48 @@ onBeforeUnmount(() => {
   }
 
   .navbar__links {
+    display: flex;
     position: fixed;
-    top: -100%;
+    top: 0;
     left: 0;
     right: 0;
     width: 100%;
-    height: auto;
     background: var(--color-bg);
     flex-direction: column;
-    padding: 5rem 2rem 2rem;
+    padding: 4rem 2rem 2rem;
     gap: 0.75rem;
-    transition: top 0.35s ease;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
     border-bottom: 1px solid var(--color-border);
+    z-index: 999;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    pointer-events: none;
+    transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
   }
 
   .navbar__links--open {
-    top: 0;
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+
+  .navbar__close {
+    position: absolute;
+    top: 1rem;
+    right: 1.5rem;
+    background: none;
+    border: none;
+    color: var(--color-text);
+    font-size: 2rem;
+    cursor: none;
+    line-height: 1;
+    transition: color var(--transition);
+  }
+
+  .navbar__close:hover {
+    color: var(--color-primary);
   }
 
   .navbar__link {
