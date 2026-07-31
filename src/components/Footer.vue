@@ -1,4 +1,4 @@
-<template>
+﻿<template>
   <footer class="footer">
     <div class="container">
       <div class="footer__grid">
@@ -8,15 +8,15 @@
             <span>acosmia</span>
           </router-link>
           <p class="footer__desc">
-            Creamos sitios web estáticos modernos y profesionales para impulsar tu negocio en internet.
+            Creamos sitios web estÃ¡ticos modernos y profesionales para impulsar tu negocio en internet.
           </p>
         </div>
 
         <div class="footer__col">
-          <h4 class="footer__heading">Navegación</h4>
-          <router-link to="/" class="footer__link">Inicio</router-link>
-          <router-link to="/servicios" class="footer__link">Servicios</router-link>
-          <router-link to="/contacto" class="footer__link">Contacto</router-link>
+          <h4 class="footer__heading">NavegaciÃ³n</h4>
+          <a href="#" class="footer__link" @click.prevent="scrollToSection('inicio')">Inicio</a>
+          <a href="#" class="footer__link" @click.prevent="scrollToSection('servicios')">Servicios</a>
+          <a href="#" class="footer__link" @click.prevent="scrollToSection('contacto')">Contacto</a>
         </div>
 
         <div class="footer__col">
@@ -36,6 +36,17 @@
 
 <script setup>
 const year = new Date().getFullYear()
+
+function scrollToSection(id) {
+  if (id === 'inicio') {
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+    return
+  }
+  const el = document.getElementById(id)
+  if (el) {
+    el.scrollIntoView({ behavior: 'smooth' })
+  }
+}
 </script>
 
 <style scoped>
@@ -125,3 +136,4 @@ const year = new Date().getFullYear()
   }
 }
 </style>
+

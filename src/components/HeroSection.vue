@@ -1,4 +1,4 @@
-<template>
+﻿<template>
   <section class="hero" ref="heroRef">
     <div class="hero__bg" ref="bgRef">
       <div class="hero__gradient" ref="gradientRef"></div>
@@ -9,16 +9,16 @@
       <span class="tag hero__tag" ref="tagRef">Desarrollo web Personal y Empresarial</span>
       <h1 class="hero__title" ref="titleRef">Tu negocio merece una web profesional</h1>
       <p class="hero__subtitle" ref="subtitleRef">
-        Creamos sitios web estáticos modernos, ultrarrápidos y optimizados para convertir visitantes en clientes. Accesibles, sin complicaciones y llamativas.
+        Creamos sitios web estÃ¡ticos modernos, ultrarrÃ¡pidos y optimizados para convertir visitantes en clientes. Accesibles, sin complicaciones y llamativas.
       </p>
       <div class="hero__actions" ref="actionsRef">
-        <a href="#contacto" class="btn btn-primary">
-          Solicitar cotización
+        <a href="#" @click.prevent="scrollToSection('contacto')" class="btn btn-primary">
+          Solicitar cotizaciÃ³n
           <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
             <path d="M4 10H16M16 10L11 5M16 10L11 15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
         </a>
-        <a href="#servicios" class="btn btn-secondary">
+        <a href="#" @click.prevent="scrollToSection('servicios')" class="btn btn-secondary">
           Ver servicios
         </a>
       </div>
@@ -48,6 +48,13 @@ const subtitleRef = ref(null)
 const actionsRef = ref(null)
 
 const { gsap, ScrollTrigger, createTimeline, splitTextToSpans, floatingElement } = useGsap()
+
+function scrollToSection(id) {
+  const el = document.getElementById(id)
+  if (el) {
+    el.scrollIntoView({ behavior: 'smooth' })
+  }
+}
 
 onMounted(() => {
   gsap.set('.hero__shape', { opacity: 0 })
@@ -246,3 +253,4 @@ onMounted(() => {
   }
 }
 </style>
+

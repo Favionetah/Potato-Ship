@@ -10,13 +10,13 @@
         <button class="navbar__close" @click="closeMenu" aria-label="Cerrar menú">
           &times;
         </button>
-        <router-link to="/" class="navbar__link" @click="closeMenu">
+        <a href="#" class="navbar__link" role="button" @click.prevent="scrollToSection('inicio')">
           Inicio
-        </router-link>
-        <a href="#planes" class="navbar__link" @click="closeMenu">
+        </a>
+        <a href="#" class="navbar__link" role="button" @click.prevent="scrollToSection('planes')">
           Planes
         </a>
-        <a href="#contacto" class="navbar__link" @click="closeMenu">
+        <a href="#" class="navbar__link" role="button" @click.prevent="scrollToSection('contacto')">
           Contacto
         </a>
       </nav>
@@ -42,6 +42,18 @@ function toggleMenu() {
 
 function closeMenu() {
   isMenuOpen.value = false
+}
+
+function scrollToSection(id) {
+  closeMenu()
+  if (id === 'inicio') {
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+    return
+  }
+  const el = document.getElementById(id)
+  if (el) {
+    el.scrollIntoView({ behavior: 'smooth' })
+  }
 }
 
 function handleScroll() {
@@ -147,6 +159,10 @@ onBeforeUnmount(() => {
   transition: transform var(--transition), opacity var(--transition);
 }
 
+.navbar__close {
+  display: none;
+}
+
 @media (max-width: 768px) {
   .navbar__toggle {
     display: flex;
@@ -181,6 +197,7 @@ onBeforeUnmount(() => {
   }
 
   .navbar__close {
+    display: block;
     position: absolute;
     top: 1rem;
     right: 1.5rem;
